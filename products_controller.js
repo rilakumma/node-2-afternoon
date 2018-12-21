@@ -3,42 +3,43 @@ module.exports = {
         const dbInstance = req.app.get('db');
         const {name, description, price, image_url} = req.body;
 
-        dbInstance.create_product([name, description, price, image_url])
-        .then( ()=> res.sendStatus(200))
+        dbInstance.create_product({name, description, price, image_url})
+        .then( (product)=> res.status(200).json(product))
         .catch( error =>{
             res.status(500).send({errorMessage: "Oops something went wrong!!!"})
             console.log('Error creating product', error);
         })
     },
-    getOne: ( req, res, next) => {
+    getOne: ( req, res) => {
         const dbInstance = req.app.get('db');
 
-        dbInstance.read_product(req.params.id).then( (product) => res.sendStatus(200).send(product))
+        dbInstance.read_product({product_id: req.params.id}).then( (product) => res.status(200).json(product))
         .catch( error =>{
             res.status(500).send({errorMessage: "Oops something went wrong!!!"})
             console.log('Error getting one product', error);
         })
       },
-    getAll: ( req, res, next ) => {
+    getAll: ( req, res) => {
         const dbInstance = req.app.get('db');
-        dbInstance.read_products().then( (products) => res.sendStatus(200).send(products))
+        
+        dbInstance.read_products().then( (products) => res.status(200).json(products))
         .catch( error =>{
             res.status(500).send({errorMessage: "Oops something went wrong!!!"})
             console.log('Error getting one product', error);
         })
       },
-    update: ( req, res, next ) => {
+    update: ( req, res) => {
         const dbInstance = req.app.get('db');
-
-        dbInstance.update_product([req.params.id, req.query.description]).then( () => res.sendStatus(200))
+        
+        dbInstance.update_product({product_id: req.params.id, description:req.query.desc}).then( () => res.status(200))
         .catch( error =>{
             res.status(500).send({errorMessage: "Oops something went wrong!!!"})
             console.log('Error getting one product', error);
         })
       },
-    delete:( req, res, next ) => {
+    delete:( req, res) => {
         const dbInstance = req.app.get('db');
-        dbInstance.delete_product(req.params.id).then( () => res.sendStatus(200))
+        dbInstance.delete_product({product_id: req.params.id}).then( () => res.status(200))
         .catch( error =>{
             res.status(500).send({errorMessage: "Oops something went wrong!!!"})
             console.log('Error getting one product', error);

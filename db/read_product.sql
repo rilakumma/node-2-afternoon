@@ -1,2 +1,2 @@
 SELECT * from product
-where product_id = ${productId};
+where product_id = ${product_id};

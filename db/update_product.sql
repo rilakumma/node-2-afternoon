@@ -1,3 +1,3 @@
 UPDATE product
 set description = ${description}
-where product_id = ${productId};
+where product_id = ${product_id};
